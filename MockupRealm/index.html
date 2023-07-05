@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table Filtering Example</title>
+    <style>
+        #filterInput {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        function filterTable() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("filterInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                var match = false;
+                for (var j = 0; j < td.length; j++) {
+                    var cell = td[j];
+                    if (cell) {
+                        txtValue = cell.textContent || cell.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+                tr[i].style.display = match ? "" : "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <label for="filterInput">Filter Table:</label>
+    <input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Enter text...">
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>EtsyLink</th>
+                <th>FileLink</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="https://www.etsy.com/link1">https://www.etsy.com/link1</a></td>
+                <td><a href="https://www.example.com/file1">https://www.example.com/file1</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://www.etsy.com/link2">https://www.etsy.com/link2</a></td>
+                <td><a href="https://www.example.com/file2">https://www.example.com/file2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://www.etsy.com/link3">https://www.etsy.com/link3</a></td>
+                <td><a href="https://www.example.com/file3">https://www.example.com/file3</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://www.etsy.com/link4">https://www.etsy.com/link4</a></td>
+                <td><a href="https://www.example.com/file4">https://www.example.com/file4</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
