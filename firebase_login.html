@@ -19,38 +19,36 @@
   <div id="firebaseui-auth-container"></div>
 
   <script>
-    // Replace with your actual Firebase project config
-    const firebaseConfig = {
-      apiKey: "AIzaSyAqXgws8Gl_O5am_xJHm661Yvl1_g-387k",
-      authDomain: "streaminfochanger.firebaseapp.com"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqXgws8Gl_O5am_xJHm661Yvl1_g-387k",
+    authDomain: "streaminfochanger.firebaseapp.com"
+  };
 
-    firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 
-    const ui = new firebaseui.auth.AuthUI(firebase.auth());
+  const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-    // Handle login or show UI
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        user.getIdToken().then((token) => {
-          // Send token to localhost app
-console.log("Redirecting with token:", token);
-setTimeout(() => {
-  window.location.href = "http://localhost:5123/?token=" + encodeURIComponent(token);
-}, 5000); // Wait 5 seconds        });
-      } else {
-        ui.start('#firebaseui-auth-container', {
-          signInFlow: 'redirect',
-          signInOptions: [
-            firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID
-          ],
-          callbacks: {
-            signInSuccessWithAuthResult: () => false // Prevent double-redirect
-          }
-        });
-      }
-    });
-  </script>
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      user.getIdToken().then((token) => {
+        console.log("Redirecting with token:", token);
+        setTimeout(() => {
+          window.location.href = "http://localhost:5123/?token=" + encodeURIComponent(token);
+        }, 5000);
+      });
+    } else {
+      ui.start('#firebaseui-auth-container', {
+        signInFlow: 'redirect',
+        signInOptions: [
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        ],
+        callbacks: {
+          signInSuccessWithAuthResult: () => false
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>
