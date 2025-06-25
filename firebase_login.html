@@ -19,35 +19,34 @@
   <button onclick="sendResetEmail()">Send Reset Link</button>
   <p id="reset-status"></p>
 </div>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAqXgws8Gl_O5am_xJHm661Yvl1_g-387k",
-      authDomain: "streaminfochanger.firebaseapp.com",
-    };
-    firebase.initializeApp(firebaseConfig);
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  };
+  firebase.initializeApp(firebaseConfig);
 
-    const ui = new firebaseui.auth.AuthUI(firebase.auth());
+  const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-    ui.start('#firebaseui-auth-container', {
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.EmailAuthProvider.PROVIDER_ID
-  ],
-  signInFlow: 'redirect',  // ← Use redirect instead of popup
-  callbacks: {
-    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-      authResult.user.getIdToken().then(function(idToken) {
-        if (window.chrome?.webview) {
-          window.chrome.webview.postMessage({ token: idToken });
-        } else {
-          console.log("Login success:", idToken);
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      user.getIdToken().then((token) => {
+        window.location.href = "http://localhost:5123/?token=" + encodeURIComponent(token);
+      });
+    } else {
+      ui.start('#firebaseui-auth-container', {
+        signInFlow: 'redirect',
+        signInOptions: [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        callbacks: {
+          signInSuccessWithAuthResult: () => false
         }
       });
-      return false; // Prevent further redirect
     }
-  }
-});
-  </script>
+  });
+</script>
 <script>
 function showPasswordReset() {
   document.getElementById('firebaseui-auth-container').style.display = 'none';
