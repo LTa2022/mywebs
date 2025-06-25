@@ -29,24 +29,24 @@
     const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
     ui.start('#firebaseui-auth-container', {
-      signInOptions: [
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID
-      ],
-      callbacks: {
-        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-          // Send ID token to C# via window.external.postMessage
-          authResult.user.getIdToken().then(function(idToken) {
-            if (window.chrome && window.chrome.webview) {
-              window.chrome.webview.postMessage({ token: idToken });
-            } else {
-              console.log("WebView2 not available");
-            }
-          });
-          return false; // Prevent redirect
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID
+  ],
+  signInFlow: 'redirect',  // ← Use redirect instead of popup
+  callbacks: {
+    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+      authResult.user.getIdToken().then(function(idToken) {
+        if (window.chrome?.webview) {
+          window.chrome.webview.postMessage({ token: idToken });
+        } else {
+          console.log("Login success:", idToken);
         }
-      }
-    });
+      });
+      return false; // Prevent further redirect
+    }
+  }
+});
   </script>
 <script>
 function showPasswordReset() {
