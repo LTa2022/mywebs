@@ -34,8 +34,10 @@
       if (user) {
         user.getIdToken().then((token) => {
           // Send token to localhost app
-          window.location.href = "http://localhost:5123/?token=" + encodeURIComponent(token);
-        });
+console.log("Redirecting with token:", token);
+setTimeout(() => {
+  window.location.href = "http://localhost:5123/?token=" + encodeURIComponent(token);
+}, 5000); // Wait 5 seconds        });
       } else {
         ui.start('#firebaseui-auth-container', {
           signInFlow: 'redirect',
