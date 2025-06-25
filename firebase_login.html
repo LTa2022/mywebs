@@ -18,14 +18,13 @@
   <h2>Sign In</h2>
   <div id="firebaseui-auth-container"></div>
 
-  <script>
+<script>
   const firebaseConfig = {
-    apiKey: "AIzaSyAqXgws8Gl_O5am_xJHm661Yvl1_g-387k",
-    authDomain: "streaminfochanger.firebaseapp.com"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com"
   };
 
   firebase.initializeApp(firebaseConfig);
-
   const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -34,14 +33,14 @@
         console.log("Redirecting with token:", token);
         setTimeout(() => {
           window.location.href = "http://localhost:5123/?token=" + encodeURIComponent(token);
-        }, 5000);
+        }, 2000); // Give time to see the redirect
       });
     } else {
       ui.start('#firebaseui-auth-container', {
         signInFlow: 'redirect',
         signInOptions: [
-          firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
         ],
         callbacks: {
           signInSuccessWithAuthResult: () => false
@@ -50,5 +49,6 @@
     }
   });
 </script>
+
 </body>
 </html>
