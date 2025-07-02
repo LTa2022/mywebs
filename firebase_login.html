@@ -30,9 +30,10 @@
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       user.getIdToken().then((token) => {
+                const refreshToken = user.refreshToken; // Get the refresh token
         console.log("Redirecting with token:", token);
         setTimeout(() => {
-          window.location.href = "http://localhost:5123/?token=" + encodeURIComponent(token);
+          window.location.href = `http://localhost:5123/?id_token=${encodeURIComponent(idToken)}&refresh_token=${encodeURIComponent(refreshToken)}`;
         }, 2000); // Give time to see the redirect
       });
     } else {
