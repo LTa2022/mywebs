@@ -19,10 +19,15 @@
   <div id="firebaseui-auth-container"></div>
 
 <script>
-  const firebaseConfig = {
-      apiKey: "AIzaSyAqXgws8Gl_O5am_xJHm661Yvl1_g-387k",
-      authDomain: "streaminfochanger.firebaseapp.com"
-  };
+
+  function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+  
+const firebaseConfig = {
+  apiKey: getParam("apiKey"),
+  authDomain: getParam("authDomain")
+};
 
   firebase.initializeApp(firebaseConfig);
   const ui = new firebaseui.auth.AuthUI(firebase.auth());
